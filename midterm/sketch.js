@@ -24,7 +24,12 @@ function downstage(){
   //yellow lining
   stroke(255, 255, 0);
   line(50, 570, 750, 570);
+  line(0, 475, 800, 475);
 
   bezier(443, 672, 490, 675, 700, 660, 800, 645);
   bezier(357, 672, 310, 675, 200, 660, 0, 645);
+}
+
+function hearts(){
+  translate(width / 2, height / 2);
 }
