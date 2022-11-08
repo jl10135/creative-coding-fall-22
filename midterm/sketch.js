@@ -5,6 +5,7 @@ function setup(){
 function draw(){
   background(220);
   downstage();
+  hearts();
 }
 
 function downstage(){
@@ -31,5 +32,8 @@ function downstage(){
 }
 
 function hearts(){
-  translate(width / 2, height / 2);
+  //inner yellow right half
+  bezier(400, 215, 470, 130, 675, 150, 550, 475);
+  //inner yellow left half
+  bezier(400, 215, 330, 130, 125, 150, 250, 475);
 }
