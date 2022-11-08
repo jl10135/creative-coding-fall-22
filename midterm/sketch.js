@@ -9,17 +9,21 @@ function setup(){
   innerHeart2 = new Lights(400, 330, 125, 250, 215, 130, 150, 475);
   innermostHeart1  = new Lights(400, 500, 610, 400, 275, 170, 310, 440);
   innermostHeart2 = new Lights(400, 300, 190, 400, 275, 170, 310, 440);
+
+  //add glow effect! utilizes html canvas functionality
+  drawingContext.shadowBlur = 20;
+  drawingContext.shadowColor = color(255, 234, 0);
 }
 
 function draw(){
   background(139, 0, 0);
   hearts();
   downstage();
+  pillarsRoof();
   innerHeart1.displayBez();
   innerHeart2.displayBez();
   innermostHeart1.displayBez();
   innermostHeart2.displayBez();
-  innermostHeart1.lightUp();
 }
 
 function downstage(){
@@ -71,42 +75,90 @@ function downstage(){
 }
 
 function hearts(){
-  strokeWeight(3);
-  //innermost heart right half
-  stroke(220, 20, 60);
-  bezier(400, 275, 500, 170, 610, 310, 400, 440);
 
-  //innermost heart left half
-  bezier(400, 275, 300, 170, 190, 310, 400, 440);
+  //innermost yellow heart
 
-  //
-
-  //this heart will be split into 4 parts because it's supposed to be behind the others
-  //so splitting will help with that illusion
-
-  //inner red heart (NO LIGHTS) top right half
-  bezier(400, 240, 450, 200, 540, 200, 585, 260);
-
-  //inner red heart bottom right half
-  bezier(575, 400, 550, 425, 520, 450, 420, 475);
-
-  //inner red heart top left half
-  bezier(400, 240, 350, 200, 260, 200, 215, 260);
-
-  //inner red heart bottom left half
-  bezier(225, 400, 250, 425, 280, 450, 380, 475);
-
-  //
-
-  //inner yellow right half
   stroke(255, 255, 0);
-  bezier(400, 215, 470, 130, 675, 150, 550, 475);
-  //inner yellow left half
-  bezier(400, 215, 330, 130, 125, 150, 250, 475);
+
+  beginShape();
+  vertex(400, 215);
+  bezierVertex(470, 130, 675, 150, 550, 475);
+  vertex(250, 475);
+  bezierVertex(125, 150, 330, 130, 400, 215);
+  endShape();
+
 
   //
+
+  //innermost red (complete) heart
+
+  strokeWeight(3);
+  stroke(220, 20, 60);
+
+  beginShape();
+  vertex(400, 275);
+  bezierVertex(500, 170, 610, 310, 400, 440);
+  bezierVertex(190, 310, 300, 170, 400, 275);
+  endShape();
+
+  //
+
+  //inner red heart NO LIGHTS (starts from top right and goes clockwise)
+
+  beginShape();
+  vertex(400, 240);
+  bezierVertex(450, 200, 540, 200, 585, 260);
+  bezierVertex(590, 300, 590, 325, 575, 400);
+  bezierVertex(550, 425, 520, 450, 420, 475);
+
+  //bottom corner of heart (to keep it centered)
+  vertex(380, 475);
+
+  bezierVertex(280, 450, 250, 425, 225, 400);
+  bezierVertex(210, 300, 210, 325, 215, 260);
+  bezierVertex(260, 200, 350, 200, 400, 240);
+  endShape();  
+
+  //
+
 
 }
+
+function pillarsRoof(){
+  stroke(255, 191, 0);
+  strokeWeight(4);
+
+  //left pillar
+  beginShape();
+  vertex(0, 500);
+  vertex(115, 500);
+  vertex(115, 440);
+  vertex(70, 440);
+  vertex(70, 0);
+  vertex(0, 0);
+  endShape();
+
+  //right pillar
+  beginShape();
+  vertex(800, 500);
+  vertex(685, 500);
+  vertex(685, 440);
+  vertex(730, 440);
+  vertex(730, 0);
+  vertex(800, 0);
+  endShape();
+
+  //ceiling/roof
+  beginShape();
+  vertex(0, 90);
+  bezierVertex(100, 90, 120, 100, 150, 50);
+  vertex(650, 50);
+  bezierVertex(680, 100, 700, 90, 800, 90);
+  vertex(800, 0);
+  vertex(0, 0);
+  endShape();
+}
+
 
 class Lights{
   constructor(x1, x2, x3, x4, y1, y2, y3, y4){
@@ -125,11 +177,11 @@ class Lights{
     stroke(253, 218, 13);
     strokeWeight(1.5);
     let increment = 10;
-    for(let i = 0; i <= increment; i += 0.6){
+    for(let i = 0; i <= increment; i += 0.8){
         let t = i / increment;
         let x = bezierPoint(this.x1, this.x2, this.x3, this.x4, t);
         let y = bezierPoint(this.y1, this.y2, this.y3, this.y4, t);
-        circle(x, y, 8);
+        circle(x, y, 9);
       }
 
   }
@@ -137,15 +189,14 @@ class Lights{
   lightUp(){
     noFill()
     stroke(253, 218, 13);
-    strokeWeight(2);
+    strokeWeight(4);
     let increment = 10;
-    for(let i = 0; i <= increment; i += 0.6){
+    for(let i = 0; i <= increment; i += 0.8){
       let t = i / increment;
       let x = bezierPoint(this.x1, this.x2, this.x3, this.x4, t);
       let y = bezierPoint(this.y1, this.y2, this.y3, this.y4, t);
-      circle(x, y, 8);
-      drawingContext.shadowBlur = 20;
-      drawingContext.shadowColor = color(255, 234, 0);
+      circle(x, y, 10);
     }
   }
+
 }
