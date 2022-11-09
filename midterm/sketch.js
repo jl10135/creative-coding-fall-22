@@ -10,21 +10,46 @@ function setup(){
   innermostHeart1  = new Lights(400, 500, 610, 400, 275, 170, 310, 440);
   innermostHeart2 = new Lights(400, 300, 190, 400, 275, 170, 310, 440);
 
+
   //add glow effect! utilizes html canvas functionality
   drawingContext.shadowBlur = 20;
   drawingContext.shadowColor = color(255, 234, 0);
-  let milliseconds  = millis();
 }
 
 function draw(){
   background(139, 0, 0);
+  // text(frameCount, width / 2, height /2);
   hearts();
   downstage();
   pillarsRoof();
-  innerHeart1.displayBez();
-  innerHeart2.displayBez();
-  innermostHeart1.displayBez();
-  innermostHeart2.displayBez();
+  innerHeart1.lightUp();
+  innerHeart2.lightUp();
+  innermostHeart1.lightUp();
+  innermostHeart2.lightUp();
+
+  if(frameCount % 120 < 60){
+    reset();
+    lightsOff();
+  }
+
+  // if(mousePressed){
+  //   let i = 0
+  //   if(i == 0){
+  //     innermostHeart1.lightUp();
+  //     innermostHeart2.lightUp();
+  //     i++
+  //   }
+  //   else if(i == 1){
+  //     innerHeart1.lightUp();
+  //     innerHeart2.lightUp();
+  //     i++
+  //   }
+  //   else if(i > 1){
+  //     reset();
+  //     lightsOff();
+  //   }
+
+  // }
 }
 
 function downstage(){
@@ -178,21 +203,20 @@ function pillarsRoof(){
 
 }
 
-function lightSequence(){
-  if(Math.floor(milliseconds / 1000) == 2){
-    innerHeart1.displayBez();
-    innerHeart2.displayBez();
-    innermostHeart1.displayBez();
-    innermostHeart2.displayBez();
-  }
-  else if(Math.floor(milliseconds / 1000) == 3){
-    innerHeart1.lightUp();
-    innerHeart2.lightUp();
-    innermostHeart1.lightUp();
-    innermostHeart2.lightUp();
-    }
+//resets base
+function reset(){
+  background(139, 0, 0);
+  hearts();
+  downstage();
+  pillarsRoof();
 }
 
+function lightsOff(){
+  innerHeart1.displayBez();
+  innerHeart2.displayBez();
+  innermostHeart1.displayBez();
+  innermostHeart2.displayBez();
+}
 
 class Lights{
   constructor(x1, x2, x3, x4, y1, y2, y3, y4){
@@ -221,7 +245,7 @@ class Lights{
   }
 
   lightUp(){
-    noFill()
+    noFill();
     stroke(253, 218, 13);
     strokeWeight(4);
     let increment = 10;
