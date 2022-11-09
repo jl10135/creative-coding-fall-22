@@ -13,6 +13,7 @@ function setup(){
   //add glow effect! utilizes html canvas functionality
   drawingContext.shadowBlur = 20;
   drawingContext.shadowColor = color(255, 234, 0);
+  let milliseconds  = millis();
 }
 
 function draw(){
@@ -76,23 +77,8 @@ function downstage(){
 
 function hearts(){
 
-  //innermost yellow heart
-
-  stroke(255, 255, 0);
-
-  beginShape();
-  vertex(400, 215);
-  bezierVertex(470, 130, 675, 150, 550, 475);
-  vertex(250, 475);
-  bezierVertex(125, 150, 330, 130, 400, 215);
-  endShape();
-
-
-  //
-
   //innermost red (complete) heart
-
-  strokeWeight(3);
+  strokeWeight(2);
   stroke(220, 20, 60);
 
   beginShape();
@@ -104,6 +90,7 @@ function hearts(){
   //
 
   //inner red heart NO LIGHTS (starts from top right and goes clockwise)
+  strokeWeight(4.5);
 
   beginShape();
   vertex(400, 240);
@@ -121,6 +108,23 @@ function hearts(){
 
   //
 
+  //outer red hearts
+
+  //innermost yellow heart
+  strokeWeight(2);
+  stroke(255, 255, 0);
+
+  beginShape();
+  vertex(400, 215);
+  bezierVertex(470, 130, 675, 150, 550, 475);
+  vertex(250, 475);
+  bezierVertex(125, 150, 330, 130, 400, 215);
+  endShape();
+
+  //
+
+
+
 
 }
 
@@ -128,27 +132,41 @@ function pillarsRoof(){
   stroke(255, 191, 0);
   strokeWeight(4);
 
-  //left pillar
+  //left pillar base
   beginShape();
   vertex(0, 500);
   vertex(115, 500);
   vertex(115, 440);
-  vertex(70, 440);
-  vertex(70, 0);
-  vertex(0, 0);
+  vertex(0, 440);
   endShape();
 
-  //right pillar
+  //right pillar base
   beginShape();
   vertex(800, 500);
   vertex(685, 500);
   vertex(685, 440);
+  vertex(800, 440);
+  endShape();
+
+  //right pillar
+  fill(196, 30, 58);
+  beginShape();
   vertex(730, 440);
   vertex(730, 0);
-  vertex(800, 0);
+  vertex(810, 0);
+  vertex(810, 440);
+  endShape();
+
+  //left pillar
+  beginShape();
+  vertex(70, 440);
+  vertex(70, 0);
+  vertex(-10, 0);
+  vertex(-10, 440);
   endShape();
 
   //ceiling/roof
+  fill(215, 0, 0);
   beginShape();
   vertex(0, 90);
   bezierVertex(100, 90, 120, 100, 150, 50);
@@ -157,6 +175,22 @@ function pillarsRoof(){
   vertex(800, 0);
   vertex(0, 0);
   endShape();
+
+}
+
+function lightSequence(){
+  if(Math.floor(milliseconds / 1000) == 2){
+    innerHeart1.displayBez();
+    innerHeart2.displayBez();
+    innermostHeart1.displayBez();
+    innermostHeart2.displayBez();
+  }
+  else if(Math.floor(milliseconds / 1000) == 3){
+    innerHeart1.lightUp();
+    innerHeart2.lightUp();
+    innermostHeart1.lightUp();
+    innermostHeart2.lightUp();
+    }
 }
 
 
