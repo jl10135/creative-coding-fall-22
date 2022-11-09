@@ -2,6 +2,9 @@ let innerHeart1;
 let innerHeart2;
 let innermostHeart1;
 let innermostHeart2;
+let outerHeart1;
+let outerHeart2;
+let scene;
 
 function setup(){
   createCanvas(800, 800);
@@ -9,6 +12,8 @@ function setup(){
   innerHeart2 = new Lights(400, 330, 125, 250, 215, 130, 150, 475);
   innermostHeart1  = new Lights(400, 500, 610, 400, 275, 170, 310, 440);
   innermostHeart2 = new Lights(400, 300, 190, 400, 275, 170, 310, 440);
+  outerHeart1 = new Lights(400, 580, 750, 600, 175, 75, 100, 475);
+  outerHeart2 = new Lights(400, 220, 50, 200, 175, 75, 100, 475);
 
 
   //add glow effect! utilizes html canvas functionality
@@ -17,39 +22,80 @@ function setup(){
 }
 
 function draw(){
-  background(139, 0, 0);
+  background(129, 19, 20);
   // text(frameCount, width / 2, height /2);
   hearts();
   downstage();
   pillarsRoof();
-  innerHeart1.lightUp();
-  innerHeart2.lightUp();
-  innermostHeart1.lightUp();
-  innermostHeart2.lightUp();
+  lightsOff();
 
-  if(frameCount % 120 < 60){
-    reset();
-    lightsOff();
+  if(key == '1'){
+    scene = 1;
+    sceneOne();
+  }
+  else if(key == '2'){
+    scene = 2;
+    sceneTwo();
+  }
+  else if(key == '3'){
+    scene = 3;
+    sceneThree();
   }
 
-  // if(mousePressed){
-  //   let i = 0
-  //   if(i == 0){
-  //     innermostHeart1.lightUp();
-  //     innermostHeart2.lightUp();
-  //     i++
-  //   }
-  //   else if(i == 1){
-  //     innerHeart1.lightUp();
-  //     innerHeart2.lightUp();
-  //     i++
-  //   }
-  //   else if(i > 1){
-  //     reset();
-  //     lightsOff();
-  //   }
-
+  // if(mouseIsPressed){
+  //   innerHeart1.lightUp();
+  //   innerHeart2.lightUp();
+  //   innermostHeart1.lightUp();
+  //   innermostHeart2.lightUp();
   // }
+
+  // if(frameCount % 120 < 60){
+  //   reset();
+  //   lightsOff();
+  // }
+
+
+}
+
+function sceneOne(){
+  // textSize(30);
+  // text(frameCount, width / 2, height / 2);
+   if(frameCount % 120 < 60){
+    innermostHeart1.lightUp();
+    innermostHeart2.lightUp();
+    innerHeart1.lightUp();
+    innerHeart2.lightUp();
+    outerHeart1.lightUp();
+    outerHeart2.lightUp();
+  }
+}
+
+function sceneTwo(){
+  if(mouseIsPressed){
+    innermostHeart1.lightUp();
+    innermostHeart2.lightUp();
+    innerHeart1.lightUp();
+    innerHeart2.lightUp();
+    outerHeart1.lightUp();
+    outerHeart2.lightUp();
+  }
+}
+
+function sceneThree(){
+  let seconds = round(millis()/1000);
+  console.log(seconds);
+  if(seconds % 2 == 0){
+    innermostHeart1.lightUp();
+    innermostHeart2.lightUp();
+    if(seconds % 2 == 0 && seconds % 3 == 0){
+      innerHeart1.lightUp();
+      innerHeart2.lightUp();
+      if(seconds % 2 == 0 && seconds % 3 == 0 && seconds % 4 == 0){
+        outerHeart1.lightUp();
+        outerHeart2.lightUp();
+      }
+    }
+  }
 }
 
 function downstage(){
@@ -102,21 +148,41 @@ function downstage(){
 
 function hearts(){
 
-  //innermost red (complete) heart
-  strokeWeight(2);
-  stroke(220, 20, 60);
-
+  //outer yellow heart (same shape but scaled)
+  push();
+  stroke(255, 255, 0);
+  strokeWeight(2.5);
+  scale(1.2);
+  translate(-66, -50);
+  fill(210, 5, 15);
   beginShape();
-  vertex(400, 275);
-  bezierVertex(500, 170, 610, 310, 400, 440);
-  bezierVertex(190, 310, 300, 170, 400, 275);
+  vertex(400, 175);
+  bezierVertex(580, 75, 750, 100, 600, 475);
+  vertex(200, 475);
+  bezierVertex(50, 100, 220, 75, 400, 175);
   endShape();
-
-  //
+  noFill();
+  pop();
+  
+  // outer red heart
+  stroke(225, 20, 60);
+  strokeWeight(2.5);
+  fill(140, 0, 20);
+  beginShape();
+  vertex(400, 175);
+  bezierVertex(580, 75, 750, 100, 600, 475);
+  vertex(200, 475);
+  bezierVertex(50, 100, 220, 75, 400, 175);
+  endShape();
+  noFill();
+ 
+   //
 
   //inner red heart NO LIGHTS (starts from top right and goes clockwise)
   strokeWeight(4.5);
+  stroke(220, 20, 60);
 
+  fill(110, 0, 0);
   beginShape();
   vertex(400, 240);
   bezierVertex(450, 200, 540, 200, 585, 260);
@@ -130,10 +196,23 @@ function hearts(){
   bezierVertex(210, 300, 210, 325, 215, 260);
   bezierVertex(260, 200, 350, 200, 400, 240);
   endShape();  
+  noFill();
 
   //
 
-  //outer red hearts
+  //innermost red (complete) heart
+  strokeWeight(2);
+  stroke(220, 20, 60);
+
+  fill(80, 0, 0);
+  beginShape();
+  vertex(400, 275);
+  bezierVertex(500, 170, 610, 310, 400, 440);
+  bezierVertex(190, 310, 300, 170, 400, 275);
+  endShape();
+  noFill();
+
+  //
 
   //innermost yellow heart
   strokeWeight(2);
@@ -174,7 +253,7 @@ function pillarsRoof(){
   endShape();
 
   //right pillar
-  fill(196, 30, 58);
+  fill(165, 42, 42);
   beginShape();
   vertex(730, 440);
   vertex(730, 0);
@@ -216,6 +295,8 @@ function lightsOff(){
   innerHeart2.displayBez();
   innermostHeart1.displayBez();
   innermostHeart2.displayBez();
+  outerHeart1.displayBez();
+  outerHeart2.displayBez();
 }
 
 class Lights{
@@ -253,7 +334,9 @@ class Lights{
       let t = i / increment;
       let x = bezierPoint(this.x1, this.x2, this.x3, this.x4, t);
       let y = bezierPoint(this.y1, this.y2, this.y3, this.y4, t);
+      fill(253, 218, 13);
       circle(x, y, 10);
+      noFill();
     }
   }
 
