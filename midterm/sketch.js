@@ -1,10 +1,13 @@
+//jamie lee
+//creative coding midterm
+//adjective: glamorous (inspired by the moulin rouge stage on bway)
+
 let innerHeart1;
 let innerHeart2;
 let innermostHeart1;
 let innermostHeart2;
 let outerHeart1;
 let outerHeart2;
-let scene;
 
 function setup(){
   createCanvas(800, 800);
@@ -23,40 +26,46 @@ function setup(){
 
 function draw(){
   background(129, 19, 20);
+  //used to framecount for one of the scenes
   // text(frameCount, width / 2, height /2);
   hearts();
   downstage();
   pillarsRoof();
   lightsOff();
+  stairs();
 
   if(key == '1'){
-    scene = 1;
     sceneOne();
   }
   else if(key == '2'){
-    scene = 2;
     sceneTwo();
   }
   else if(key == '3'){
-    scene = 3;
     sceneThree();
   }
 
-  // if(mouseIsPressed){
-  //   innerHeart1.lightUp();
-  //   innerHeart2.lightUp();
-  //   innermostHeart1.lightUp();
-  //   innermostHeart2.lightUp();
-  // }
-
-  // if(frameCount % 120 < 60){
-  //   reset();
-  //   lightsOff();
-  // }
-
+  if(key == '4'){
+    spotLights()
+    innermostHeart1.lightUp();
+    innermostHeart2.lightUp();
+    innerHeart1.lightUp();
+    innerHeart2.lightUp();
+    outerHeart1.lightUp();
+    outerHeart2.lightUp();
+  }
 
 }
 
+//double spotlights
+function spotLights(){
+  fill(255, 192, 0, 150);
+  noStroke();
+  ellipse(mouseX, mouseY, 150, 150);
+  ellipse((800 - mouseX), mouseY, 150, 150);
+  
+}
+
+//flash lights every two seconds
 function sceneOne(){
   // textSize(30);
   // text(frameCount, width / 2, height / 2);
@@ -70,6 +79,7 @@ function sceneOne(){
   }
 }
 
+//if user clicks mouse, the lights activate
 function sceneTwo(){
   if(mouseIsPressed){
     innermostHeart1.lightUp();
@@ -81,16 +91,17 @@ function sceneTwo(){
   }
 }
 
+//periodic flashing of lights but not all together
 function sceneThree(){
   let seconds = round(millis()/1000);
-  console.log(seconds);
+  // console.log(seconds);
   if(seconds % 2 == 0){
     innermostHeart1.lightUp();
     innermostHeart2.lightUp();
-    if(seconds % 2 == 0 && seconds % 3 == 0){
+    if(seconds % 4 == 0){
       innerHeart1.lightUp();
       innerHeart2.lightUp();
-      if(seconds % 2 == 0 && seconds % 3 == 0 && seconds % 4 == 0){
+      if(seconds % 6 == 0){
         outerHeart1.lightUp();
         outerHeart2.lightUp();
       }
@@ -98,6 +109,17 @@ function sceneThree(){
   }
 }
 
+//to add depth and  dimension + also to just make the stage seem less empty
+function stairs(){
+  fill(54, 69, 79);
+  stroke(40, 40, 43);
+  rect(350, 435, 100, 25, 20);
+  rect(325, 450, 150, 25, 20);
+  rect(300, 465, 200, 25, 20);
+  rect(275, 480, 250, 25, 20);
+}
+
+//most of stage is drawn here
 function downstage(){
   //stage fill
   fill(27, 18, 18);
@@ -146,6 +168,7 @@ function downstage(){
   bezier(0, 727, 355, 765, 455, 765, 800, 727);
 }
 
+//all hearts
 function hearts(){
 
   //outer yellow heart (same shape but scaled)
@@ -228,10 +251,9 @@ function hearts(){
   //
 
 
-
-
 }
 
+//pillars and roof
 function pillarsRoof(){
   stroke(255, 191, 0);
   strokeWeight(4);
@@ -290,6 +312,7 @@ function reset(){
   pillarsRoof();
 }
 
+//redraws all the lights on the hearts
 function lightsOff(){
   innerHeart1.displayBez();
   innerHeart2.displayBez();
@@ -299,6 +322,7 @@ function lightsOff(){
   outerHeart2.displayBez();
 }
 
+//used to draw lights on the hearts
 class Lights{
   constructor(x1, x2, x3, x4, y1, y2, y3, y4){
     this.x1 = x1;
@@ -325,8 +349,8 @@ class Lights{
 
   }
 
+  //very similar code but with fill + heavier strokeweight to give illusion of lights
   lightUp(){
-    noFill();
     stroke(253, 218, 13);
     strokeWeight(4);
     let increment = 10;
